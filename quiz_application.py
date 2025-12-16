@@ -1,7 +1,7 @@
 import tkinter
 import clips
 from functools import partial
-rules_filepath = "D:/pcode/AI/test_3.clp"
+rules_filepath = "./rules.clp"
 question = ""
 curr_fact = ""
 possible_answers = ""

@@ -358,3 +358,48 @@
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
 (assert (answer Quantum_Leap))
 )
+
+(defrule biopunk_or_steampunk
+?f <- (action_or_drama ?v&Action)
+?q <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Biopunk_or_Steampunk? biopunk_or_steampunk Steampunk:Biopunk))
+)
+
+(defrule answer_sanctuary
+?f <- (biopunk_or_steampunk ?v&Steampunk)
+?q <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Sanctuary))
+)
+
+(defrule whedon_or_cameron
+?f <- (biopunk_or_steampunk ?v&Biopunk)
+?q <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Whedon_or_Cameron? whedon_or_cameron Cameron:Whedon))
+)
+
+(defrule answer_dark_angel
+?f <- (whedon_or_cameron ?v&Cameron)
+?q <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Dark_Angel))
+)
+
+(defrule answer_dollhouse
+?f <- (whedon_or_cameron ?v&Whedon)
+?q <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Dollhouse))
+)
