@@ -1,1 +1,7 @@
-clipspy
+cffi==2.0.0
+clipspy==1.0.6
+pycparser==2.23
+#default tkinter
+
+#python version -- Python 3.12.10
+#!!! On linux systems Python default install does not include tkinter library.
