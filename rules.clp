@@ -9,7 +9,8 @@
 )
 
 (defrule like-anthologies
-?f  <- (genre ?v&SciFi)
+(or ?f <- (genre ?v&SciFi)
+    ?f <- (vampires-or-zombies ?v&Neither))
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -53,8 +54,10 @@
 (assert (answer Alien_Nation))
 )
 
-(defrule animated-or-live-action-scifi
-?f  <- (friends-or-invaders ?v&Invaders)
+(defrule animated-or-live-action
+(or ?f <- (friends-or-invaders ?v&Invaders)
+    ?f <- (likes-superheroes ?v&Yep)
+    ?f <- (myths-or-legends ?v&Legends))
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -90,8 +93,8 @@
 )
 
 (defrule british-or-american
-?f  <- (comedy ?v&Yep)
-?q <- (question ?qn $?)
+(or ?f <- (comedy ?v&Yep) ?f <- (time-gateways ?v&Yep) ?f <- (sfw ?v&NSFW))
+?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
@@ -186,15 +189,6 @@
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
 (assert (answer Battlestar_Galactica_Modern))
-)
-
-(defrule british-or-american-gateways
-?f  <- (time-gateways ?v&Yep)
-?q  <- (question ?qn $?)
-?qh <- (questions $?qs) ?ah <- (answers $?a)
-=>
-(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question British_or_American? british-or-american USA:UK))
 )
 
 (defrule answer-stargate
@@ -422,15 +416,6 @@
 (assert (question Like_Superheroes? likes-superheroes Yep:Nope))
 )
 
-(defrule animated-or-live-action-fantasy
-?f  <- (likes-superheroes ?v&Yep)
-?q  <- (question ?qn $?)
-?qh <- (questions $?qs) ?ah <- (answers $?a)
-=>
-(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Animated_or_Live_Action? animated-or-live-action Live:Toons))
-)
-
 (defrule answer-Smallville
 ?f  <- (animated-or-live-action ?v&Live) (answers $? Yep)
 ?q  <- (question ?qn $?)
@@ -510,15 +495,6 @@
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
 (assert (answer Xena))
-)
-
-(defrule animated-or-live-action-period
-?f  <- (myths-or-legends ?v&Legends)
-?q  <- (question ?qn $?)
-?qh <- (questions $?qs) ?ah <- (answers $?a)
-=>
-(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Animated_or_Live_Action? animated-or-live-action Live:Toons))
 )
 
 (defrule lots-of-nudity
@@ -638,15 +614,6 @@
 (assert (answer Buffy_the_Vampire_Slayer))
 )
 
-(defrule british-or-american-nsfw
-?f  <- (sfw ?v&NSFW)
-?q  <- (question ?qn $?)
-?qh <- (questions $?qs) ?ah <- (answers $?a)
-=>
-(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question British_or_American? british-or-american UK:USA))
-)
-
 (defrule answer-being-human
 ?f  <- (british-or-american ?v&UK) (answers $? NSFW)
 ?q  <- (question ?qn $?)
@@ -672,15 +639,6 @@
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
 (assert (answer The_Walking_Dead))
-)
-
-(defrule like-anthologies-horror
-?f  <- (vampires-or-zombies ?v&Neither)
-?q  <- (question ?qn $?)
-?qh <- (questions $?qs) ?ah <- (answers $?a)
-=>
-(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Like_anthologies? like-anthologies Yep:Nope))
 )
 
 (defrule psy-or-gory
