@@ -25,9 +25,9 @@ app.geometry(str(screen_width // 2)+'x'+str(screen_height // 2))
 app.configure(bg='deepskyblue')
 
 #elements ssetup
-title = tkinter.Label(app,text="PRESS START TO BEGIN",anchor='center',bg='deepskyblue'
-                      ,font=('comicsansms',24,'bold'))
-title.place(relx=0.4,rely=0.45)
+title = tkinter.Label(app,text="PRESS START TO BEGIN",anchor='w',bg='deepskyblue'
+                      ,font=('comicsansms',22,'bold'))
+title.place(relx=0.3,rely=0.45)
 # text_input = tkinter.Text(app,width=30,height=3)
 # text_input.grid(row=1,column=0)
 
@@ -53,19 +53,19 @@ def button_press(answer = ''):
             possible_answers = fact_formatted[3].split(':')
             break
         elif fact_formatted[0] == "answer":
-            title.config(text=fact_formatted[1])
+            title.config(text="Answer:\n"+fact_formatted[1].replace('_',' '))
             print('------FACTS--------')
             for j in clips_env.facts():
                 print(j)
             return
         else:
             continue
-    title.config(text=question)
-    title.place(relx=0.4 - len(question)/100,rely=0.45)
+    title.config(text=question.replace('_',' '))
+    title.place(relx=0.45 - len(question)/200,rely=0.45)
 
     start_x = 0.60 - (0.15*len(possible_answers))
     for i in range(len(possible_answers)):
-        button = tkinter.Button(app,text=possible_answers[i],width=18,command= partial(button_press,possible_answers[i])
+        button = tkinter.Button(app,text=possible_answers[i].replace('_',' '),width=18,command= partial(button_press,possible_answers[i])
                                 ,activebackground='blue',activeforeground='white',
                               cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
         button.place(relx=start_x,rely=0.9)
@@ -75,6 +75,7 @@ def button_press(answer = ''):
     # print(input)
     # clips_env.assert_string(input)
 
+#reset method
 def reset_button():
     global question, curr_fact, possible_answers, buttons
     #czyszczenie przyciskow
@@ -104,9 +105,6 @@ button_reset = tkinter.Button(app,text="RESET",width=25,command=reset_button
                               cursor='hand1',overrelief='groove',bg='tomato',bd=10,font='comicsansms')
 button_reset.place(relx=0,rely=0)
 buttons.append(button_start)
-
-
-
 
 #start app
 app.mainloop()
