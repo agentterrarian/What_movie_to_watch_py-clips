@@ -1,4 +1,4 @@
-(defrule wyswietl_what_sf_series_should_i_watch
+(defrule wyswietl-what-sf-series-should-i-watch
 (not (question $?text))
 (not (answer $?text))
 (not (genre ?))
@@ -8,17 +8,17 @@
 (assert (answers))   ; answer history
 )
 
-(defrule like_anthologies
+(defrule like-anthologies
 ?f  <- (genre ?v&SciFi)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Like_anthologies anthologies_like Yep:Nope))
+(assert (question Like_anthologies like-anthologies Yep:Nope))
 )
 
-(defrule answer_outer_limits
-?f  <- (anthologies_like ?v&Yep)
+(defrule answer-outer-limits
+?f  <- (like-anthologies ?v&Yep) (answers $? SciFi)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -26,26 +26,26 @@
 (assert (answer The_Outer_Limits))
 )
 
-(defrule space_opera_or_home
-?f  <- (anthologies_like ?v&Nope)
+(defrule space-opera-or-home
+?f  <- (like-anthologies ?v&Nope) (answers $? SciFi)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Space_Opera_or_close_to_home? space_opera_or_home Home:Stars))
+(assert (question Space_Opera_or_close_to_home? space-opera-or-home Home:Stars))
 )
 
-(defrule friendlies_or_invaders
-?f  <- (space_opera_or_home ?v&Home)
+(defrule friendlies-or-invaders
+?f  <- (space-opera-or-home ?v&Home)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Friendlies_or_invaders? friends_or_invaders Friends:Invaders))
+(assert (question Friendlies_or_invaders? friends-or-invaders Friends:Invaders))
 )
 
-(defrule answer_alien_nation
-?f  <- (friends_or_invaders ?v&Friends)
+(defrule answer-alien-nation
+?f  <- (friends-or-invaders ?v&Friends)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -53,26 +53,26 @@
 (assert (answer Alien_Nation))
 )
 
-(defrule animated_or_live_action
-?f  <- (friends_or_invaders ?v&Invaders)
+(defrule animated-or-live-action-scifi
+?f  <- (friends-or-invaders ?v&Invaders)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Animated_or_Live_Action? animated_or_live_action Live:Toons))
+(assert (question Animated_or_Live_Action? animated-or-live-action Live:Toons))
 )
 
-(defrule answer_invader_zim
-?f  <- (animated_or_live_action ?v&Toons)
+(defrule answer-invader-zim
+?f  <- (animated-or-live-action ?v&Toons) (answers $? Invaders)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (answer Invaer_Zim))
+(assert (answer Invader_Zim))
 )
 
-(defrule answer_v
-?f  <- (animated_or_live_action ?v&Live)
+(defrule answer-v
+?f  <- (animated-or-live-action ?v&Live) (answers $? Invaders)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -81,7 +81,7 @@
 )
 
 (defrule comedy
-?f  <- (space_opera_or_home ?v&Stars)
+?f  <- (space-opera-or-home ?v&Stars)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -89,17 +89,17 @@
 (assert (question Comedy? comedy Yep:Nope))
 )
 
-(defrule british_or_american
+(defrule british-or-american
 ?f  <- (comedy ?v&Yep)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question British_or_American? british_or_american UK:USA))
+(assert (question British_or_American? british-or-american UK:USA))
 )
 
-(defrule answer_red_dwarf_1
-?f  <- (british_or_american ?v&UK)
+(defrule answer-red-dwarf-1
+?f  <- (british-or-american ?v&UK) (answers $? Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -107,8 +107,8 @@
 (assert (answer Red_Dwarf_1))
 )
 
-(defrule answer_futurama
-?f  <- (british_or_american ?v&USA)
+(defrule answer-futurama
+?f  <- (british-or-american ?v&USA) (answers $? Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -125,7 +125,7 @@
 (assert (question Trekkie? trekkie Yep:Nope:yep_but_seen))
 )
 
-(defrule answer_earth_final_conflict
+(defrule answer-earth-final-conflict
 ?f  <- (trekkie ?v&yep_but_seen)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
@@ -134,17 +134,17 @@
 (assert (answer Earth_Final_Conflict))
 )
 
-(defrule like_westerns
+(defrule like-westerns
 ?f  <- (trekkie ?v&Nope)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Like_westerns? like_westerns Yep:Nope))
+(assert (question Like_westerns? like-westerns Yep:Nope))
 )
 
-(defrule answer_firefly
-?f  <- (like_westerns ?v&Yep)
+(defrule answer-firefly
+?f  <- (like-westerns ?v&Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -152,26 +152,26 @@
 (assert (answer Firefly))
 )
 
-(defrule time_gateways
-?f  <- (like_westerns ?v&Nope)
+(defrule time-gateways
+?f  <- (like-westerns ?v&Nope)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Time/Space_gateways? time_gateways Yep:Nope))
+(assert (question Time/Space_gateways? time-gateways Yep:Nope))
 )
 
-(defrule classic_or_modern
-?f  <- (time_gateways ?v&Nope)
+(defrule classic-or-modern
+?f  <- (time-gateways ?v&Nope)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Classic_or_Modern? classic_or_modern Classic:Modern))
+(assert (question Classic_or_Modern? classic-or-modern Classic:Modern))
 )
 
-(defrule answer_battlestar_galactica
-?f  <- (classic_or_modern ?v&Classic)
+(defrule answer-battlestar-galactica
+?f  <- (classic-or-modern ?v&Classic)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -179,8 +179,8 @@
 (assert (answer Battlestar_Galactica))
 )
 
-(defrule answer_battlestar_galactica_modern
-?f  <- (classic_or_modern ?v&Modern)
+(defrule answer-battlestar-galactica-modern
+?f  <- (classic-or-modern ?v&Modern)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -188,17 +188,17 @@
 (assert (answer Battlestar_Galactica_Modern))
 )
 
-(defrule british_or_american_2
-?f  <- (time_gateways ?v&Yep)
+(defrule british-or-american-gateways
+?f  <- (time-gateways ?v&Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question British_or_American? british_or_american_2 USA:UK))
+(assert (question British_or_American? british-or-american USA:UK))
 )
 
-(defrule answer_stargate
-?f  <- (british_or_american_2 ?v&USA)
+(defrule answer-stargate
+?f  <- (british-or-american ?v&USA) (answers $? Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -206,8 +206,8 @@
 (assert (answer Stargate))
 )
 
-(defrule answer_doctor_who
-?f  <- (british_or_american_2 ?v&UK)
+(defrule answer-doctor-who
+?f  <- (british-or-american ?v&UK) (answers $? Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -215,17 +215,17 @@
 (assert (answer Doctor_Who))
 )
 
-(defrule will_wheaton
+(defrule will-wheaton
 ?f  <- (trekkie ?v&Yep)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Will_Wheaton? will_wheaton Woot:NOO))
+(assert (question Will_Wheaton? will-wheaton Woot:NOO))
 )
 
-(defrule answer_the_next_generation
-?f  <- (will_wheaton ?v&Woot)
+(defrule answer-the-next-generation
+?f  <- (will-wheaton ?v&Woot)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -233,17 +233,17 @@
 (assert (answer The_Next_Generation))
 )
 
-(defrule what_do_you_study
-?f  <- (will_wheaton ?v&NOO)
+(defrule what-do-you-study
+?f  <- (will-wheaton ?v&NOO)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question What_do_you_study? what_study Poli-sci:Womens_Lib:Sociology:History))
+(assert (question What_do_you_study? what-study Poli-sci:Womens_Lib:Sociology:History))
 )
 
-(defrule answer_star_trek_deep_space
-?f  <- (what_study ?v&Poli-sci)
+(defrule answer-star-trek-deep-space
+?f  <- (what-study ?v&Poli-sci)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -251,8 +251,8 @@
 (assert (answer Star_Trek_Deep_Space_Prime))
 )
 
-(defrule answer_star_trek_voyager
-?f  <- (what_study ?v&Womens_Lib)
+(defrule answer-star-trek-voyager
+?f  <- (what-study ?v&Womens_Lib)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -260,8 +260,8 @@
 (assert (answer Star_Trek_Voyager))
 )
 
-(defrule answer_star_trek_original
-?f  <- (what_study ?v&Sociology)
+(defrule answer-star-trek-original
+?f  <- (what-study ?v&Sociology)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -269,8 +269,8 @@
 (assert (answer Star_Trek_Original))
 )
 
-(defrule answer_star_trek_enterprise
-?f  <- (what_study ?v&History)
+(defrule answer-star-trek-enterprise
+?f  <- (what-study ?v&History)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -278,26 +278,26 @@
 (assert (answer Star_Trek_Enterprise))
 )
 
-(defrule action_or_drama
+(defrule action-or-drama
 ?f <- (genre ?v&Slipstream)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Action_or_Drama? action_or_drama Action:Drama))
+(assert (question Action_or_Drama? action-or-drama Action:Drama))
 )
 
-(defrule have_seen_x-files
-?f <- (action_or_drama ?v&Drama)
+(defrule have-seen-x-files
+?f <- (action-or-drama ?v&Drama)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Have_you_seen_X-files? have_seen_x-files Yep:Nope:Hated_it))
+(assert (question Have_you_seen_X-files? have-seen-x-files Yep:Nope:Hated_it))
 )
 
-(defrule answer_fringe
-?f <- (have_seen_x-files ?v&Yep)
+(defrule answer-fringe
+?f <- (have-seen-x-files ?v&Yep)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -305,8 +305,8 @@
 (assert (answer Fringe))
 )
 
-(defrule answer_x_files
-?f <- (have_seen_x-files ?v&Nope)
+(defrule answer-x-files
+?f <- (have-seen-x-files ?v&Nope)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -314,17 +314,17 @@
 (assert (answer The_X_Files))
 )
 
-(defrule ok_let_down
-?f <- (have_seen_x-files ?v&Hated_it)
+(defrule ok-let-down
+?f <- (have-seen-x-files ?v&Hated_it)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Are_you_OK_with_being_let_down? ok_let_down Yep:Nope))
+(assert (question Are_you_OK_with_being_let_down? ok-let-down Yep:Nope))
 )
 
-(defrule answer_lost_1
-?f <- (ok_let_down ?v&Yep)
+(defrule answer-lost_1
+?f <- (ok-let-down ?v&Yep)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -332,17 +332,17 @@
 (assert (answer Lost_1))
 )
 
-(defrule feel_scott_bakula
-?f <- (ok_let_down ?v&Nope)
+(defrule feel-scott-bakula
+?f <- (ok-let-down ?v&Nope)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question How_do_you_feel_about_Scott_Bakula? feel_scott_bakula Who?:Fan))
+(assert (question How_do_you_feel_about_Scott_Bakula? feel-scott-bakula Who?:Fan))
 )
 
-(defrule answer_warehouse_13
-?f <- (feel_scott_bakula ?v&Who?)
+(defrule answer-warehouse_13
+?f <- (feel-scott-bakula ?v&Who?)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -350,8 +350,8 @@
 (assert (answer Warehouse_13))
 )
 
-(defrule answer_quantum_leap
-?f <- (feel_scott_bakula ?v&Fan)
+(defrule answer-quantum-leap
+?f <- (feel-scott-bakula ?v&Fan)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -359,17 +359,17 @@
 (assert (answer Quantum_Leap))
 )
 
-(defrule biopunk_or_steampunk
-?f <- (action_or_drama ?v&Action)
+(defrule biopunk-or-steampunk
+?f <- (action-or-drama ?v&Action)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Biopunk_or_Steampunk? biopunk_or_steampunk Steampunk:Biopunk))
+(assert (question Biopunk_or_Steampunk? biopunk-or-steampunk Steampunk:Biopunk))
 )
 
-(defrule answer_sanctuary
-?f <- (biopunk_or_steampunk ?v&Steampunk)
+(defrule answer-sanctuary
+?f <- (biopunk-or-steampunk ?v&Steampunk)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -377,17 +377,17 @@
 (assert (answer Sanctuary))
 )
 
-(defrule whedon_or_cameron
-?f <- (biopunk_or_steampunk ?v&Biopunk)
+(defrule whedon-or-cameron
+?f <- (biopunk-or-steampunk ?v&Biopunk)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Whedon_or_Cameron? whedon_or_cameron Cameron:Whedon))
+(assert (question Whedon_or_Cameron? whedon-or-cameron Cameron:Whedon))
 )
 
-(defrule answer_dark_angel
-?f <- (whedon_or_cameron ?v&Cameron)
+(defrule answer-dark-angel
+?f <- (whedon-or-cameron ?v&Cameron)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -395,11 +395,327 @@
 (assert (answer Dark_Angel))
 )
 
-(defrule answer_dollhouse
-?f <- (whedon_or_cameron ?v&Whedon)
+(defrule answer-dollhouse
+?f <- (whedon-or-cameron ?v&Whedon)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
 (assert (answer Dollhouse))
 )
+
+(defrule urban-or-period
+?f  <- (genre ?v&Fantasy)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Urban_or_Period? urban-or-period Urban:Period))
+)
+
+(defrule likes-superheroes
+?f  <- (urban-or-period ?v&Urban)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Like_Superheroes? likes-superheroes Yep:Nope))
+)
+
+(defrule animated-or-live-action-fantasy
+?f  <- (likes-superheroes ?v&Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Animated_or_Live_Action? animated-or-live-action Live:Toons))
+)
+
+(defrule answer-Smallville
+?f  <- (animated-or-live-action ?v&Live) (answers $? Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Smallville))
+)
+
+(defrule answer-The-Tick
+?f  <- (animated-or-live-action ?v&Toons) (answers $? Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer The_Tick))
+)
+
+(defrule mythology-perchange
+?f  <- (likes-superheroes ?v&Nope)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question How_about_Mythology? mythology-perchance Yep:Nope))
+)
+
+(defrule answer-Highlander
+?f  <- (mythology-perchance ?v&Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Highlander_S01))
+)
+
+(defrule answer-Dresden-Files
+?f  <- (mythology-perchance ?v&Nope)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Dresden_Files))
+)
+
+(defrule myths-or-legends
+?f  <- (urban-or-period ?v&Period)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Myths_or_Legends? myths-or-legends Myths:Legends))
+)
+
+(defrule dudes-or-girls
+?f  <- (myths-or-legends ?v&Myths)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Buff_Dudes_or_Hot_Girls? dudes-or-girls Dudes:Ladies))
+)
+
+(defrule answer-Hercules
+?f  <- (dudes-or-girls ?v&Dudes)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Hercules:_The_Legendary_Journeys_S01))
+)
+
+(defrule answer-Xena
+?f  <- (dudes-or-girls ?v&Ladies)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Xena))
+)
+
+(defrule animated-or-live-action-period
+?f  <- (myths-or-legends ?v&Legends)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Animated_or_Live_Action? animated-or-live-action Live:Toons))
+)
+
+(defrule lots-of-nudity
+?f  <- (animated-or-live-action ?v&Live) (answers $? Legends)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Like_lots_of_nudity? lots-of-nudity Yep:Nope))
+)
+
+(defrule answer-Spartacus
+?f  <- (lots-of-nudity ?v&Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Spartacus))
+)
+
+(defrule answer-Legend-of-the-Seeker
+?f  <- (lots-of-nudity ?v&Nope)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Legend_of_the_Seeker))
+)
+
+(defrule has-gameboy
+?f  <- (animated-or-live-action ?v&Toons) (answers $? Legends)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Do_you_have_a_gameboy? has-gameboy Yep:Nope))
+)
+
+(defrule answer-Pokemon
+?f  <- (has-gameboy ?v&Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Pokemon))
+)
+
+(defrule answer-Avatar
+?f  <- (has-gameboy ?v&Nope)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Avatar:_The_Last_Airbender))
+)
+
+(defrule vampires-or-zombies
+?f  <- (genre ?v&Horror)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Vampires_or_Zombies? vampires-or-zombies Vampires:Zombies:Neither))
+)
+
+(defrule over-16
+?f  <- (vampires-or-zombies ?v&Vampires)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question How_old_are_you? over-16 over_16:below_16))
+)
+
+(defrule answer-The-Vampire-Dianes
+?f  <- (over-16 ?v&below_16)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer The_Vampire_Dianes))
+)
+
+(defrule sfw
+?f  <- (over-16 ?v&over_16)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question SFW_or_NSFW? sfw SFW:NSFW))
+)
+
+(defrule seen-buffy
+?f  <- (sfw ?v&SFW)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Seen_Buffy? seen-buffy Yep:Nope))
+)
+
+(defrule answer-Angel
+?f  <- (seen-buffy ?v&Yep)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Angel))
+)
+
+(defrule answer-Buffy
+?f  <- (seen-buffy ?v&Nope)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Buffy_the_Vampire_Slayer))
+)
+
+(defrule british-or-american-nsfw
+?f  <- (sfw ?v&NSFW)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question British_or_American? british-or-american UK:USA))
+)
+
+(defrule answer-being-human
+?f  <- (british-or-american ?v&UK) (answers $? NSFW)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer being_human))
+)
+
+(defrule answer-True-Blood
+?f  <- (british-or-american ?v&USA) (answers $? NSFW)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer True_Blood))
+)
+
+(defrule answer-The-Walking-Dead
+?f  <- (vampires-or-zombies ?v&Zombies)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer The_Walking_Dead))
+)
+
+(defrule like-anthologies-horror
+?f  <- (vampires-or-zombies ?v&Neither)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Like_anthologies? like-anthologies Yep:Nope))
+)
+
+(defrule psy-or-gory
+?f  <- (like-anthologies ?v&Yep) (answers $? Neither)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (question Pychological_or_Gory? psy-or-gory Psycho:Gory))
+)
+
+(defrule answer-The-Twilight-Zone
+?f  <- (psy-or-gory ?v&Psycho)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer The_Twilight_Zone))
+)
+
+(defrule answer-Tales-from-the-Crypt
+?f  <- (psy-or-gory ?v&Gory)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Tales_from_the_Crypt))
+)
+
+(defrule answer-Charmed
+?f  <- (like-anthologies ?v&Nope) (answers $? Neither)
+?q  <- (question ?qn $?)
+?qh <- (questions $?qs) ?ah <- (answers $?a)
+=>
+(retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
+(assert (answer Charmed))
+)
+
