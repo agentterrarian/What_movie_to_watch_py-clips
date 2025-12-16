@@ -125,11 +125,11 @@
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Trekkie? trekkie Yep:Nope:Yep._But_seen_em_all_1000X))
+(assert (question Trekkie? trekkie Yep:Nope:Seen_em_all))
 )
 
 (defrule answer-earth-final-conflict
-?f  <- (trekkie ?v&Yep._But_seen_em_all_1000X)
+?f  <- (trekkie ?v&Seen_em_all)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
