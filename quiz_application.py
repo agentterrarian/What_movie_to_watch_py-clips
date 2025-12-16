@@ -22,12 +22,13 @@ app.title("Which SciFI movie should I watch on Netflix")
 screen_width = app.winfo_screenwidth()
 screen_height = app.winfo_screenheight()
 app.geometry(str(screen_width // 2)+'x'+str(screen_height // 2))
-app.configure(bg='deepskyblue')
+app.configure(bg='lavender')
 
 #elements ssetup
-title = tkinter.Label(app,text="PRESS START TO BEGIN",anchor='w',bg='deepskyblue'
+title = tkinter.Label(app,text="PRESS START TO BEGIN",anchor='center',bg='lavender'
                       ,font=('comicsansms',22,'bold'))
-title.place(relx=0.3,rely=0.45)
+title.place(relx=0.5,rely=0.5,anchor='center')
+#title.place(x=screen_width//4,y=screen_height//4,anchor='center')
 # text_input = tkinter.Text(app,width=30,height=3)
 # text_input.grid(row=1,column=0)
 
@@ -61,16 +62,15 @@ def button_press(answer = ''):
         else:
             continue
     title.config(text=question.replace('_',' '))
-    title.place(relx=0.45 - len(question)/200,rely=0.45)
 
-    start_x = 0.60 - (0.15*len(possible_answers))
+    starter_x = 0.5 - (len(possible_answers)*0.125)
     for i in range(len(possible_answers)):
         button = tkinter.Button(app,text=possible_answers[i].replace('_',' '),width=18,command= partial(button_press,possible_answers[i])
                                 ,activebackground='blue',activeforeground='white',
                               cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
-        button.place(relx=start_x,rely=0.9)
+        button.place(relx=starter_x,rely=0.95,anchor='w')
         buttons.append(button)
-        start_x = start_x + 0.25
+        starter_x += 0.25
     # input = text_input.get("1.0",'end-1c')
     # print(input)
     # clips_env.assert_string(input)
@@ -91,14 +91,14 @@ def reset_button():
     button_start = tkinter.Button(app,text="START",width=25,command=button_press
                                   ,activebackground='blue',activeforeground='white',
                               cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
-    button_start.place(relx=0.4,rely=0.9)
+    button_start.place(relx=0.5,rely=0.95,anchor='center')
     buttons.append(button_start)
 
 
 button_start = tkinter.Button(app,text="START",width=25,command=button_press
                               ,activebackground='blue',activeforeground='white',
                               cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
-button_start.place(relx=0.4,rely=0.9)
+button_start.place(relx=0.5,rely=0.95,anchor='center')
 
 button_reset = tkinter.Button(app,text="RESET",width=25,command=reset_button
                               ,activebackground='red',activeforeground='white',
