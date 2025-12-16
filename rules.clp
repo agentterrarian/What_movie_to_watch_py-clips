@@ -3,7 +3,7 @@
 (not (answer $?text))
 (not (genre ?))
 =>
-(assert (question What_SF_series_should_I_watch_on_Netflix genre SciFi:Horror:Fantasy:Slipstream))
+(assert (question What_SF_series_should_I_watch_on_Netflix? genre SciFi:Horror:Fantasy:Slipstream))
 (assert (questions)) ; question history
 (assert (answers))   ; answer history
 )
@@ -15,7 +15,7 @@
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Like_anthologies like-anthologies Yep:Nope))
+(assert (question Like_anthologies? like-anthologies Yep:Nope))
 )
 
 (defrule answer-outer-limits
@@ -66,7 +66,7 @@
 )
 
 (defrule answer-invader-zim
-?f  <- (animated-or-live-action ?v&Toons) (answers $? Invaders)
+?f  <- (animated-or-live-action ?v&Toons) (answers $? Invaders) (questions $? Friendlies_or_invaders?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -75,7 +75,7 @@
 )
 
 (defrule answer-v
-?f  <- (animated-or-live-action ?v&Live) (answers $? Invaders)
+?f  <- (animated-or-live-action ?v&Live) (answers $? Invaders) (questions $? Friendlies_or_invaders?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -102,7 +102,7 @@
 )
 
 (defrule answer-red-dwarf-1
-?f  <- (british-or-american ?v&UK) (answers $? Yep)
+?f  <- (british-or-american ?v&UK) (answers $? Yep) (questions $? Comedy?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -111,7 +111,7 @@
 )
 
 (defrule answer-futurama
-?f  <- (british-or-american ?v&USA) (answers $? Yep)
+?f  <- (british-or-american ?v&USA) (answers $? Yep) (questions $? Comedy?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -125,11 +125,11 @@
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Trekkie? trekkie Yep:Nope:yep_but_seen))
+(assert (question Trekkie? trekkie Yep:Nope:Yep._But_seen_em_all_1000X))
 )
 
 (defrule answer-earth-final-conflict
-?f  <- (trekkie ?v&yep_but_seen)
+?f  <- (trekkie ?v&Yep._But_seen_em_all_1000X)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -192,7 +192,7 @@
 )
 
 (defrule answer-stargate
-?f  <- (british-or-american ?v&USA) (answers $? Yep)
+?f  <- (british-or-american ?v&USA) (answers $? Yep) (questions $? Time/Space_gateways?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -201,7 +201,7 @@
 )
 
 (defrule answer-doctor-who
-?f  <- (british-or-american ?v&UK) (answers $? Yep)
+?f  <- (british-or-american ?v&UK) (answers $? Yep) (questions $? Time/Space_gateways?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -215,7 +215,7 @@
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question Will_Wheaton? will-wheaton Woot:NOO))
+(assert (question Will_Wheaton? will-wheaton Woot:NOOOO!))
 )
 
 (defrule answer-the-next-generation
@@ -228,7 +228,7 @@
 )
 
 (defrule what-do-you-study
-?f  <- (will-wheaton ?v&NOO)
+?f  <- (will-wheaton ?v&NOOOO!)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -332,7 +332,7 @@
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
 (retract ?f ?q ?qh ?ah) (assert (questions $?qs ?qn) (answers $?a ?v))
-(assert (question How_do_you_feel_about_Scott_Bakula? feel-scott-bakula Who?:Fan))
+(assert (question How_do_you_feel_about_Scott_Bakula? feel-scott-bakula Who?:I'm_a_fan))
 )
 
 (defrule answer-warehouse_13
@@ -345,7 +345,7 @@
 )
 
 (defrule answer-quantum-leap
-?f <- (feel-scott-bakula ?v&Fan)
+?f <- (feel-scott-bakula ?v&I'm_a_fan)
 ?q <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -498,7 +498,7 @@
 )
 
 (defrule lots-of-nudity
-?f  <- (animated-or-live-action ?v&Live) (answers $? Legends)
+?f  <- (animated-or-live-action ?v&Live) (answers $? Legends) (questions $? Myths_or_Legends?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -525,7 +525,7 @@
 )
 
 (defrule has-gameboy
-?f  <- (animated-or-live-action ?v&Toons) (answers $? Legends)
+?f  <- (animated-or-live-action ?v&Toons) (answers $? Legends) (questions $? Myths_or_Legends?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -615,7 +615,7 @@
 )
 
 (defrule answer-being-human
-?f  <- (british-or-american ?v&UK) (answers $? NSFW)
+?f  <- (british-or-american ?v&UK) (answers $? NSFW) (questions $? SFW_or_NSFW?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -624,7 +624,7 @@
 )
 
 (defrule answer-True-Blood
-?f  <- (british-or-american ?v&USA) (answers $? NSFW)
+?f  <- (british-or-american ?v&USA) (answers $? NSFW) (questions $? SFW_or_NSFW?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -642,7 +642,7 @@
 )
 
 (defrule psy-or-gory
-?f  <- (like-anthologies ?v&Yep) (answers $? Neither)
+?f  <- (like-anthologies ?v&Yep) (answers $? Neither) (questions $? Vampires_or_Zombies?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
@@ -669,7 +669,7 @@
 )
 
 (defrule answer-Charmed
-?f  <- (like-anthologies ?v&Nope) (answers $? Neither)
+?f  <- (like-anthologies ?v&Nope) (answers $? Neither) (questions $? Vampires_or_Zombies?)
 ?q  <- (question ?qn $?)
 ?qh <- (questions $?qs) ?ah <- (answers $?a)
 =>
