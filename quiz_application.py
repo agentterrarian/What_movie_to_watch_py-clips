@@ -15,21 +15,21 @@ clips_env.load(rules_filepath)
 app = tkinter.Tk()
 app.title("Which SciFI movie should I watch on Netflix")
 #Tutaj moze dobierac do rozdzielczosci ekranu
-app.geometry("250x150")
+screen_width = app.winfo_screenwidth()
+screen_height = app.winfo_screenheight()
+app.geometry(str(screen_width // 2)+'x'+str(screen_height // 2))
+app.configure(bg='deepskyblue')
 
 #elements ssetup
-title = tkinter.Label(app,text="QUESTION WILL BE SHOWN HERE")
-title.grid(row=0,column=0)
+title = tkinter.Label(app,text="PRESS START TO BEGIN",anchor='center',bg='deepskyblue'
+                      ,font=('comicsansms',24,'bold'))
+title.place(relx=0.4,rely=0.45)
 # text_input = tkinter.Text(app,width=30,height=3)
 # text_input.grid(row=1,column=0)
-# text_output = tkinter.Label(app,text="OUTPUT WILL BE HERE")
-# text_output.grid(row=4,column=0)
-
-
 
 #button function
 def button_press(answer = ''):
-    global question, curr_fact, possible_answers, question_id, buttons
+    global question, curr_fact, possible_answers, buttons
     
     #czyszczenie przyciskow
     for i in range(len(buttons)):
@@ -60,18 +60,51 @@ def button_press(answer = ''):
         else:
             continue
     title.config(text=question)
+    title.place(relx=0.4 - len(question)/100,rely=0.45)
+
+    start_x = 0.60 - (0.15*len(possible_answers))
     for i in range(len(possible_answers)):
-        button = tkinter.Button(app,text=possible_answers[i],width=25,command= partial(button_press,possible_answers[i]))
-        button.grid(row=4+i)
+        button = tkinter.Button(app,text=possible_answers[i],width=18,command= partial(button_press,possible_answers[i])
+                                ,activebackground='blue',activeforeground='white',
+                              cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
+        button.place(relx=start_x,rely=0.9)
         buttons.append(button)
+        start_x = start_x + 0.25
     # input = text_input.get("1.0",'end-1c')
     # print(input)
     # clips_env.assert_string(input)
-    
 
-button = tkinter.Button(app,text="START",width=25,command=button_press)
-button.grid(row=3,column=0)
-buttons.append(button)
+def reset_button():
+    global question, curr_fact, possible_answers, buttons
+    #czyszczenie przyciskow
+    for i in range(len(buttons)):
+        buttons[i].destroy()
+    buttons = []
+
+    question = ""
+    curr_fact = ""
+    possible_answers = ""
+    clips_env.reset()
+    title.config(text="PRESS START TO BEGIN")
+    button_start = tkinter.Button(app,text="START",width=25,command=button_press
+                                  ,activebackground='blue',activeforeground='white',
+                              cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
+    button_start.place(relx=0.4,rely=0.9)
+    buttons.append(button_start)
+
+
+button_start = tkinter.Button(app,text="START",width=25,command=button_press
+                              ,activebackground='blue',activeforeground='white',
+                              cursor='hand1',overrelief='groove',bg='gold',bd=10,font='comicsansms')
+button_start.place(relx=0.4,rely=0.9)
+
+button_reset = tkinter.Button(app,text="RESET",width=25,command=reset_button
+                              ,activebackground='red',activeforeground='white',
+                              cursor='hand1',overrelief='groove',bg='tomato',bd=10,font='comicsansms')
+button_reset.place(relx=0,rely=0)
+buttons.append(button_start)
+
+
 
 
 #start app
